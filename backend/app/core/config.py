@@ -13,6 +13,8 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str = "your-openai-api-key"  # Replace with your OpenAI API key
     # Replace with your Stripe secret key
     STRIPE_SECRET_KEY: str = "your-stripe-secret-key"
+    GOOGLE_SERVICE_ACCOUNT_FILE: str = "service_account_credentials.json"
+    GOOGLE_CALENDAR_ID:str = "Google Calendar ID"
 
     class Config:
         env_file = ".env"

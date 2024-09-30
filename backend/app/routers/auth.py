@@ -1,11 +1,8 @@
-# app/routers/auth.py
-
 from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form
 from fastapi.security import OAuth2PasswordRequestForm
 from pydantic import EmailStr
-from datetime import date
-from typing import Optional
 from datetime import datetime
+from typing import Optional
 
 from app.services.auth import authenticate_user, get_current_user
 from app.core.security import create_access_token, get_password_hash
@@ -20,16 +17,23 @@ router = APIRouter()
 async def register(
     email: EmailStr = Form(...),
     full_name: str = Form(...),
-    date_of_birth: date = Form(...),
+    date_of_birth: str = Form(...),
     bio: Optional[str] = Form(None),
     password: str = Form(...),
     role: str = Form(...),
     file: UploadFile = File(None)
 ):
+    try:
+        date_of_birth_parsed = datetime.strptime(
+            date_of_birth, "%Y-%m-%d").date()
+    except ValueError:
+        raise HTTPException(
+            status_code=400, detail="Invalid date format, must be YYYY-MM-DD")
+
     user = UserCreate(
         email=email,
         full_name=full_name,
-        date_of_birth=date_of_birth,
+        date_of_birth=date_of_birth_parsed,
         bio=bio,
         password=password,
         role=role
@@ -38,10 +42,12 @@ async def register(
     existing_user = await db.users.find_one({"email": user.email})
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
+
     hashed_password = get_password_hash(user.password)
     profile_image_url = None
     if file:
         profile_image_url = await save_profile_image(file)
+
     user_dict = {
         'email': user.email,
         'full_name': user.full_name,
@@ -55,7 +61,6 @@ async def register(
     result = await db.users.insert_one(user_dict)
     user_dict['id'] = str(result.inserted_id)
 
-    # Create profile in students or mentors collection
     if user.role == 'student':
         await db.students.insert_one({
             'user_id': user_dict['id'],

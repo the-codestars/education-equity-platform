@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.schemas.meeting import MeetingSchedule, MeetingResponse
 from app.core.database import db
 from app.services.auth import get_current_user
-from app.services.meeting import generate_zoom_meeting
+from app.services.meeting import generate_google_meet_meeting
 from datetime import datetime
 
 router = APIRouter()
@@ -21,7 +21,7 @@ async def schedule_meeting(
             status_code=403, detail="Only mentors can schedule meetings")
 
     # Generate meeting link
-    meeting_link = await generate_zoom_meeting(
+    meeting_link = await generate_google_meet_meeting(
         topic=meeting.topic,
         start_time=meeting.start_time,
         duration=meeting.duration

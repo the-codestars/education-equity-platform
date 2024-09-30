@@ -7,9 +7,8 @@ from app.core.security import verify_password
 from app.core.database import db
 from app.core.config import settings
 from app.schemas.user import TokenData
-from app.models.user import User
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 async def get_user(email: str):

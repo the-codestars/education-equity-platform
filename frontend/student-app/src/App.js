@@ -33,7 +33,7 @@ const App = () => {
               </ProtectedRoute>
             }
           >
-            <Route path="/" element={<Navigate to="/teachers" />} />
+            <Route path="/" element={<Navigate to="/assignments" />} />
             <Route path="/assignments" element={<ViewAssignment />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/finding-mentor" element={<FindingMentor />} />

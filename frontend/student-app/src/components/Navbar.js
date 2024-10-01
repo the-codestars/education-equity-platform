@@ -23,11 +23,6 @@ const Navbar = () => {
   };
 
   const navItems = [
-    {
-      name: "List of Teachers",
-      path: "/teachers",
-      icon: <FaChalkboardTeacher />,
-    },
     { name: "View Assignments", path: "/assignments", icon: <FaTasks /> },
     { name: "Profile", path: "/profile", icon: <FaUser /> },
     { name: "Finding Mentor", path: "/finding-mentor", icon: <FaHandshake /> },

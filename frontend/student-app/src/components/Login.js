@@ -43,7 +43,7 @@ const Login = () => {
       login(access_token);
 
       // Navigate to the dashboard or desired page
-      navigate("/teachers"); // Replace with your desired route
+      navigate("/assignments"); // Replace with your desired route
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     } finally {
